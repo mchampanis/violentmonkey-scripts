@@ -9,4 +9,4 @@ remove webcam results when searching locations in Windy. I find them annoying wh
 
 ## `zyxel-1password-complete.js`
 
-Zyxel internet routers have terrible Javascript that does not behave properly with 1Password (a password manager). This is a bit of a hack to fix things enough to allow the 1Password extension to work and fill in your saved details.
+Zyxel internet routers have terrible Javascript that does not behave properly with 1Password (a password manager). This is a bit of a hack to fix things enough to allow the 1Password extension to work and fill in your saved details. Only developed and tested for the router I had at home.
