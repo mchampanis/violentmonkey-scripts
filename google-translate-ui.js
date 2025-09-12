@@ -1,12 +1,12 @@
 // ==UserScript==
-// @name        remove distracting WhatsApp ui elements
+// @name        edit google translate ui to improve use in a single window
 // @namespace   Violentmonkey Scripts
-// @match       https://web.whatsapp.com/*
+// @match       https://translate.google.com/*
 // @grant       none
-// @version     1.1
+// @version     1.0
 // @author      mchampanis
 // @license     MIT
-// @description hides the status/stories and AI menu items from WhatsApp web
+// @description removes and resizes some ui elements
 // ==/UserScript==
 
 (function () {
@@ -14,12 +14,10 @@
     'use strict';
 
     function removeItems() {
-        // do it this way for now because meta html is obsfucated and it will probably change
+        // do it this way for now because google html is obsfucated and it will probably change
         const selectors = [
-            { selector: 'button[aria-label="Updates in Status"]', useParent: true },
-            { selector: 'button[aria-label="Status"]', useParent: true },
-            { selector: 'button[aria-label="Meta AI"]', useParent: true },
-            { selector: 'hr', useParent: true }
+            { selector: 'nav.VlPnLc', useParent: false },
+            { selector: 'div.HWmS8', useParent: false }
         ];
 
         for (const { selector, useParent } of selectors) {
@@ -31,9 +29,14 @@
         } //for
     } //removeItems
 
-    // master function for future
+    function resizeTextBox() {
+        const textBox = document.querySelector('c-wiz.rm1UF');
+        textBox.style.minHeight = '300px';
+    } //resizeTextBox
+
     function doAll() {
         removeItems();
+        resizeTextBox();
     } //doAll
 
     doAll();
