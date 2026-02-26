@@ -3,7 +3,7 @@
 // @namespace   Violentmonkey Scripts
 // @match       https://web.whatsapp.com/*
 // @grant       none
-// @version     1.1
+// @version     1.3
 // @author      mchampanis
 // @license     MIT
 // @description hides the status/stories and AI menu items from WhatsApp web
@@ -13,34 +13,34 @@
 
     'use strict';
 
+    let debounceTimer;
+
     function removeItems() {
-        // do it this way for now because meta html is obsfucated and it will probably change
-        const selectors = [
-            { selector: 'button[aria-label="Updates in Status"]', useParent: true },
-            { selector: 'button[aria-label="Status"]', useParent: true },
-            { selector: 'button[aria-label="Meta AI"]', useParent: true },
-            { selector: 'hr', useParent: true }
+        // do it this way for now because meta html is obfuscated and it will probably change
+        // each nav item is: wrapper div > span.html-span > button; remove the span
+        const buttonSelectors = [
+            'button[aria-label="Updates in Status"]',
+            'button[aria-label="Status"]',
+            'button[aria-label="Meta AI"]',
         ];
 
-        for (const { selector, useParent } of selectors) {
-            const element = document.querySelector(selector);
-            if (element) {
-                const targetElement = useParent ? element.parentNode : element;
-                targetElement.remove();
-            } //if
+        for (const selector of buttonSelectors) {
+            const el = document.querySelector(selector);
+            if (el) el.parentElement.parentElement.remove();
         } //for
     } //removeItems
 
     // master function for future
-    function doAll() {
+    function doAllChanges() {
         removeItems();
     } //doAll
 
-    doAll();
+    doAllChanges();
 
-    // MutationObserver to handle dynamically loaded elements
-    const observer = new MutationObserver(function (mutations) {
-        doAll();
+    // MutationObserver to handle dynamically loaded elements; debounced to reduce CPU overhead
+    const observer = new MutationObserver(function () {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(doAllChanges, 300);
     });
 
     // observe the document
